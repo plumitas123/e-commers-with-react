@@ -1,7 +1,13 @@
 import { useGetData } from '../hooks/useGetData'
+import { useCounterStore } from '../stores/useCounterStore'
 
 export function Product () {
   const { data } = useGetData({ url: 'https://fakestoreapi.com/products' })
+  const { increment } = useCounterStore()
+
+  const handelClick = () => {
+    increment()
+  }
 
   return (
     <>
@@ -27,7 +33,7 @@ export function Product () {
               ${product.price}
             </span>
 
-            <button className='mt-auto bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700'>
+            <button className='mt-auto bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700' onClick={handelClick}>
               Agregar al carrito
             </button>
           </div>

@@ -1,4 +1,4 @@
-import { fetchData } from "../stores/DataFetch"
+import { fetchData } from "../services/DataFetch"
 import { useEffect, useState } from "react"
 
 export function useGetData({ url }) {
