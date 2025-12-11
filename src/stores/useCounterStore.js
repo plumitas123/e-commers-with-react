@@ -5,11 +5,22 @@ export const useCounterStore = create(set => ({
   menuProducts: [],
 
   increment: () => set(state => ({ count: state.count + 1 })),
-  postProduct: (product) =>
-  set(state => {
-    const exists = state.menuProducts.some((p) => p.id === product.id)
-    if (exists) return state // No duplicar
+  postProduct: product =>
+    set(state => {
+      const exists = state.menuProducts.find(p => p.id === product.id)
 
-    return { menuProducts: [...state.menuProducts, product] }
-  }),
+      // Si ya existe → aumentar cantidad
+      if (exists) {
+        return {
+          menuProducts: state.menuProducts.map(p =>
+            p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p
+          )
+        }
+      }
+
+      // Si no existe → agregarlo con cantidad = 1
+      return {
+        menuProducts: [...state.menuProducts, { ...product, quantity: 1 }]
+      }
+    })
 }))

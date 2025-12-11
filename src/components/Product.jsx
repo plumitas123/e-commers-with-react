@@ -1,10 +1,13 @@
 import { useGetData } from '../hooks/useGetData'
 import { useCounterStore } from '../stores/useCounterStore'
+import { filterProducts } from '../services/FilterProducts'
 
 export function Product () {
   const { data } = useGetData({ url: 'https://fakestoreapi.com/products' })
   const { increment } = useCounterStore()
   const postProduct = useCounterStore((state) => state.postProduct)
+
+  const filteredProducts = filterProducts(data)
 
   const handelClick = (product) => {
     increment()
@@ -14,7 +17,8 @@ export function Product () {
   return (
     <>
       <div className='grid gap-6 grid-cols-[repeat(auto-fit,minmax(260px,1fr))]'>
-        {data?.map(product => (
+        
+        {filteredProducts?.map(product => (
           <div
             key={product.id}
             className='bg-white rounded-xl shadow p-4 flex flex-col'
@@ -35,11 +39,15 @@ export function Product () {
               ${product.price}
             </span>
 
-            <button className='mt-auto bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700' onClick={() => handelClick(product)}>
+            <button
+              className='mt-auto bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700'
+              onClick={() => handelClick(product)}
+            >
               Agregar al carrito
             </button>
           </div>
         ))}
+
       </div>
     </>
   )
